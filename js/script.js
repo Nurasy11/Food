@@ -118,16 +118,8 @@ window.addEventListener('DOMContentLoaded', () => {
         clearInterval(modalTimerId);
     }
 
-    // modalCloseBtn.addEventListener('click', closeModal);
-
-    // modal.addEventListener('click', (e) => {
-    //     if (e.target === modal) {
-    //         closeModal();
-    //     }
-    // });
-
     modal.addEventListener('click', (e) => {
-        if (e.target === modal || e.target.getAttribute('data-close') == '') {
+        if (e.target === modal || e.target.getAttribute('data-close') == "") {
             closeModal();
         }
     })
@@ -168,8 +160,8 @@ window.addEventListener('DOMContentLoaded', () => {
         render() {
             const element = document.createElement("div");
             if (this.classes.length === 0) {
-                this.element = 'menu__item';
-                element.classList.add(this.element);
+                this.classes = 'menu__item';
+                element.classList.add(this.classes);
             } else {
                 this.classes.forEach(className => element.classList.add(className));
             }
@@ -218,7 +210,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const message = {
         loading: 'img/form/spinner.svg',
         success: 'Спасибо! Скоро мы с вами свяжжемся',
-        failure: 'что то нет так'
+        failure: 'что то нет так...'
     };
     forms.forEach(item => {
         postData(item);
@@ -233,35 +225,42 @@ window.addEventListener('DOMContentLoaded', () => {
             display: block;
             margin:0 auto;
             `;
-            form.appendChild(statusMessage);
+            form.insertAdjacentHTML('afterend', statusMessage);
 
-            const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');
-
-            request.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
-            const formData = new FormData(form);
+            const formData = new FormData(form); // собираем данные
 
             const object = {};
             formData.forEach(function (value, key) {
                 object[key] = value;
             });
 
-            const json = JSON.stringify(object);
+            //отправка данные
+            fetch('server.php', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(object)
 
-            request.send(json);
-
-            request.addEventListener('load', () => {
-                if (request.status === 200) {
-                    console.log(request.response)
-                    showThanksModal(message.success);
-                    statusMessage.remove();
-                    form.reset(); // форманы кетіреді
-
-                }
-                else {
-                    showThanksModal(message.failure);
-                }
+            }).then(data => {
+                console.log(data);
+                showThanksModal(message.success);
+                statusMessage.remove();
+            }).catch(() => {
+                showThanksModal(message.failure);
+            }).finally(() => {
+                form.reset();
             });
+            // request.addEventListener('load', () => {
+            //     if (request.status === 200) {
+            //         console.log(request.response)
+            //         showThanksModal(message.success);
+            //         statusMessage.remove();
+            //         form.reset(); // форманы кетіреді
+
+            //     }
+            //     else {
+            //         showThanksModal(message.failure);
+            //     }
+            // });
         });
     }
 
@@ -288,11 +287,5 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
 
     }
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'POST',
-        body: JSON.stringify({ name: 'Alex' }),
-        headers: { 'Content-Type': 'application/json' }
-    })
-        .then(response => response.json())
-        .then(json => console.log(json));
+   
 });
