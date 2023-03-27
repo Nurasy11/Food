@@ -57,4 +57,4 @@ function cards(){
     axios.get('http://localhost:3000/menu')
         .then(data => console.log(data));
 }
-module.exports = cards;
+export default  cards;

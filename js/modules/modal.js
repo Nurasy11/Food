@@ -1,4 +1,4 @@
-function modal(){
+function modal() {
     const modalTrigger = document.querySelectorAll('[data-modal]'),
         modal = document.querySelector('.modal');
 
@@ -44,4 +44,4 @@ function modal(){
     window.addEventListener('scroll', showModalByScroll);
 }
 
-module.exports = modal;
+export default modal;
