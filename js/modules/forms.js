@@ -1,3 +1,4 @@
+import { closeModal, openModal } from "./modal";
 function forms() {
     const forms = document.querySelectorAll('form');
     const message = {
