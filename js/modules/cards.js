@@ -1,6 +1,8 @@
-function cards(){
-     //Используем классы для карточек
-     class MenuCards {
+import { getResource } from "../services/services";
+
+function cards() {
+    //Используем классы для карточек
+    class MenuCards {
         constructor(src, alt, title, descr, price, parentSelector, ...classes) {
             this.src = src;
             this.alt = alt;
@@ -38,14 +40,7 @@ function cards(){
             this.parent.append(element);
         }
     }
-    const getResource = async (url) => {
-        const res = await fetch(url);
-
-        if (!res.ok) {
-            throw new Error(`Couldn't fetch ${url}, status:${res.status}`);
-        }
-        return await res.json();
-    }
+    
     //новый канша обьект болсада кабылдай береді
     getResource('http://localhost:3000/menu')
         .then(data => {
@@ -57,4 +52,4 @@ function cards(){
     axios.get('http://localhost:3000/menu')
         .then(data => console.log(data));
 }
-export default  cards;
+export default cards;
